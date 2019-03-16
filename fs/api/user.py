@@ -19,6 +19,8 @@ class ApiRegister(restful.Resource):
         #验证用户名和密码格式
         '''
         verify username and password
+        user:15591470327
+        pass:1
         '''
         u = model.User()
         u.username = args.get('username', 'noname')

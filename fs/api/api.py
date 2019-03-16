@@ -6,6 +6,7 @@ def bind_app(app):
 
     from . import welcome
     api.add_resource(welcome.Index, '/api/welcome')
+    api.add_resource(welcome.ApiIsLogin, '/api/islogin')
 
     from . import user
     api.add_resource(user.ApiRegister, '/api/register')
