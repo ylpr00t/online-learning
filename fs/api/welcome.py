@@ -1,6 +1,5 @@
 import flask_restful as restful
 from flask_jwt import current_identity, jwt_required
-from flask_restful import reqparse
 from fs.utils import format_response
 
 

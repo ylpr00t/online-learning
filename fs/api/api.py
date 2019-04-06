@@ -12,3 +12,7 @@ def bind_app(app):
     api.add_resource(user.ApiRegister, '/api/register')
     api.add_resource(user.ApiLogin, '/api/login')
     api.add_resource(user.ApiUserList, '/api/userlist')
+
+    from . import classes
+    api.add_resource(classes.ApiAddClasses, '/api/addclasses')
+

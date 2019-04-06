@@ -8,3 +8,12 @@ JWT_EXPIRE = 28800
 DB_URI = 'mysql+pymysql://dbuser1:sa@localhost/db1?charset=utf8'
 
 IS_ALLOW_ORIGIN = True
+
+CLASSES_CATEGORY = {
+    0: 'unknown',
+    1: '计算机',
+    2: '金融',
+    3: '物理',
+    4: '数学',
+    5: '英语',
+}

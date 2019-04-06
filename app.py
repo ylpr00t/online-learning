@@ -30,7 +30,7 @@ def drop_tables():
     db.drop_all()
 
 
-manager.add_command('runserver', Server(port=8080, host='127.0.0.1'))
+manager.add_command('runserver', Server(port=8081, host='0.0.0.0'))
 
 
 if __name__ == '__main__':
