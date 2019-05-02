@@ -3,9 +3,9 @@
     <div class="content-box">
       <div class="right-box">
         <div class="login-box">
-          <div v-if="flowType === 1">欢迎登录</div>
-          <div v-else-if="flowType === 2">立即注册</div>
-          <div v-else-if="flowType === 3">重置密码</div>
+          <div v-if="flowType === 1" class="login-title">欢迎登录</div>
+          <div v-else-if="flowType === 2" class="login-title">立即注册</div>
+          <div v-else-if="flowType === 3" class="login-title">重置密码</div>
 
           <div class="inp-group">
             <label class="label">账户名称</label>
@@ -13,7 +13,7 @@
           </div>
 
           <div class="inp-group">
-            <label class="label">密码</label>
+            <label class="label">账户密码</label>
             <input class="inp" :placeholder="flowType === 3 ? '请输入新密码' : '请输入密码'" :class="{'focus': focusPassword}" type="password" v-model="password" @focus="focusPassword = true" @blur="password === '' ? focusPassword = false : ''">
           </div>
 
@@ -62,19 +62,10 @@
         againPassword: '', // 再次输入密码
         focusAgainPwd: false,
         focusVer: false,
-        // errorTip
         showErrorTip: false, // 两次密码输入不一致
-        // regNum: /^\d*$/, // 匹配输入的是否数字
         regPhone: /^[1][3,4,5,6,7,8][0-9]{9}$/, // 验证手机号码格式
         regPassword: /^[0-9a-zA-Z_]{6,12}$/, // 验证密码格式
       }
-    },
-    beforeCreate() {
-      //let token = this.$unit.getCookie('token')
-      //if (token) {
-      //  this.$unit.jump('manage.html')
-      //}
-      alert("check token");
     },
     watch: {
       password () {
@@ -137,7 +128,8 @@
           return
         }
         if (type === 2) { // 修改
-          this.onClickEditPwd_()
+          alert('当前版本不开放次功能，请联系管理员吧')
+          return
         }
         this.onClickRegister_()
       },
@@ -152,18 +144,11 @@
           data: JSON.stringify(request),
           dataType: "json",
           url:"http://localhost:8081/api/login",
-          /*
-          beforeSend: function(request) {
-            request.setRequestHeader("Authorization", "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZGVudGl0eSI6MSwibmJmIjoxNTUyNzQ3Nzg3LCJleHAiOjE1NTI3NzY1ODcsImlhdCI6MTU1Mjc0Nzc4N30.0sJbtLQIzRWtB0Wm4ZPQSIooGyWSFE_JrxsbR9p2UUw");
-          },
-          */
           success:function (data) {
             if (data['code'] == -400)
               alert(data['message'])
             else if (data['code'] == 0){
               alert(data['message'])
-              //存储token，跳转到manage.html
-              //this.storageCookie_func(request.username, request.password, data['data']['access_token'])
               var exdate = new Date()
               exdate.setDate(exdate.getDate() + (99) || 0)
               document.cookie = 'username' + '=' + escape(request.username) + ';expires=' + exdate.toGMTString()
@@ -173,7 +158,7 @@
             }
           },
           error:function (e) {
-            alert("500");
+            alert("服务器内部出错了，请稍等!!!");
           }
         });
       },
@@ -199,41 +184,281 @@
         })
         */
       },
-      onClickEditPwd_ () {
-        alert("change pass")
-        /*
-        var request = {
-          'username': this.userPhone,
-          'password': this.password,
-        }
-        this.$http({
-          url: resetPwdUrl,
-          method: 'post',
-          data: request,
-          that: this
-        }).then((response) => {
-          this.$root.$refs.tip.show_('修改密码成功')
-          this.initInp_()
-          this.flowType = 1
-          return Promise.resolve()
-        })
-        */
-      },
     },
   }
 </script>
 
 
-<style scoped>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
+<style lang="stylus" scoped>
+  body{text-align:center}
+  #app
+    width 100%
+    height 100%
+    overflow hidden
+    .content-box
+      width 100%
+      height 100%
+      overflow auto
+      align-items center
+      .right-box
+        margin 0 auto
+        flex 0 0 45%
+        height 100%
+        width 50%
+        min-width 600px
+        min-height 650px
+        background #f0f0f0
+        position relative
+        .login-box
+          width 100%
+          position absolute
+          top 50%
+          left 50%
+          transform translate3d(-50%, -50%, 0)
+          padding 0 15%
+          box-sizing border-box
+          .login-title
+            text-align center
+            margin-bottom 15%
+            margin-left 15%
+            font-size 30px
+            color #000000
+          .inp-group
+            width 100%
+            margin-bottom 30px
+            display flex
+            align-items center
+            justify-content space-between
+            position relative
+            .label
+              flex 0.2
+              text-align right
+              margin-right 15px
+              color #000000
+              font-size 16px
+            .inp
+              flex 1
+              padding 10px 0
+              text-indent 10px
+              background #ffffff
+              opacity 0.5
+              border-radius 2px
+              &.focus
+                opacity 1
+            .inp.verifcation-inp
+              border-radius 2px 0 0 2px
+            .inp-box
+              flex 1
+              overflow hidden
+              display flex
+              .btn
+                padding 0 10px
+                color #343434
+                background #ffffff
+                outline none
+                cursor pointer
+            .inp-box.protocol
+              display flex
+              align-items center
+              .radio
+                width 15px
+                height 15px
+                cursor pointer
+                margin-right 10px
+                background #ffffff
+                img
+                  width 100%
+                  height 100%
+                  margin 50% 0 0 50%
+                  transform translate3d(-50%, -50%, 0)
+              .protocol-text
+                cursor pointer
+                font-size 12px
+                color #ffffff
+                font-weight 200
+                text-decoration underline
+              .radio.slct
+                background #ff5f3d
+            .error-tip
+              font-size 12px
+              color #ff2020
+              position absolute
+              top 50%
+              right 20px
+              transform translateY(-50%)
+          .btn-box
+            width 100%
+            display flex
+            text-align center
+            margin-top 30px
+            position relative
+            .label
+              flex 0.2
+              margin-right 15px
+            .entry-btn
+              flex 1
+              height 38px
+              line-height 38px
+              cursor pointer
+              outline none
+              border-radius 2px
+              background #ff5f3d
+              text-align center
+              color #ffffff
+              font-size 18px
+              &:hover
+                box-shadow 0 5px 8px 0 rgba(255,95,61,0.50)
+              &:active
+                background #EB4B29
+            .regFog
+              width 80%
+              position absolute
+              top 150%
+              left 20%
+              display flex
+              justify-content space-around
+              .option
+                font-size 14px
+                text-decoration underline
+                font-weight 200
+                color #000000
+                cursor pointer
+                opacity 0.7
+                &:hover
+                  color #ff5f3d
+          .acconut-box, .password-box, .code-box
+            display flex
+            margin-bottom 24px
+            padding-bottom 14px
+            padding-left 28px
+            border-bottom 1px solid #8E9191
+            position relative
+            .acconut, .password, .code
+              margin-left 44px
+              height 30px
+              font-size 20px
+              color #8E9191
+              -webkit-appearance none
+              -moz-appearance textfield
+            .acconut::-webkit-outer-spin-button,
+            .acconut::-webkit-inner-spin-button
+              -webkit-appearance none
+            .acconut, .password
+              width 422px
+            .code
+              width 322px
+            .code-btn
+              width 100px
+              color #FFB822
+              background-color #fff
+              cursor pointer
+            .passwordTip
+              position absolute
+              right 0
+              width 200px
+              height 40px
+              top 0
+              background-size 100% 100%
+              padding 12px 0
+              padding-left 30px
+              box-sizing border-box
+              color red
+          .password-box, .code-box
+            img
+              padding 1px 0
+          .acconut-box.
+            img
+              padding 3px 0
+          .active-box
+            border-bottom 1px solid #FFB822
+          .login-btn
+            margin 100px auto 24px
+            width 250px
+            padding 12px 0
+            border-radius 6px
+            box-shadow 1px 3px 4px 2px rgba(255,184,34,.4)
+            font-size 16px
+            text-align center
+            color #ffffff
+            background-color #FFB822
+            cursor pointer
+            &.is-danger
+              background-color #eaeaea
+              box-shadow none
+              cursor not-allowed
+          .tip
+            padding-bottom 4px
+            font-size 14px
+            width 50%
+            margin auto
+            color #ffffff
+            cursor pointer
+            display flex
+            justify-content space-around
+            & span
+              border-bottom 1px solid #ffffff
+            & span:hover
+              color #FFB822
+              border-bottom 1px solid #FFB822
+        .register-box
+          padding-left 28px
+          padding-bottom 14px
+          border-bottom 1px solid #8e9191
+          display flex
+        .register-box input
+          height 30px
+          font-size 20px
+          color #8e9191
+          margin-left 44px
+        .register-box span
+          cursor pointer
+          line-height 30px
+          text-align center
+          min-width 80px
+        .scan-code
+          display flex
+          position absolute
+          bottom 60px
+          left 50%
+          transform translateX(-50%)
+          justify-content space-between
+          width 40%
+          text-align center
+          font-size 14px
+          color #828282
+        .help-book
+          position absolute
+          right 100px
+          top 20px
+          cursor pointer
+          &:hover
+            color #FFB822
+</style>
+<style lang="stylus">
+  .nc_scale
+    height 38px !important
+    background #E8E8E8 !important
+    div.nc_bg
+      background #FFB822 !important
+    .scale_text
+      font-size 15px !important
+    .scale_text2
+      color #FFF !important
+    span.btn_slide
+      border 1px solid #FFF !important
+  .errloading
+    border #FAF1D5 1px solid !important
+    color #EF9F06 !important
+  .nc-container
+    border 0
+    border-radius 2px
+    overflow hidden
+    width 100% !important
+    #nc_2_wrapper, #nc_2_wrapper
+      width 100% !important
+    .imgCaptcha, .clickCaptcha
+      width 100% !important
+  .nc-container .nc_scale span
+    height 36px
+    line-height 36px
 </style>

@@ -15,4 +15,13 @@ def bind_app(app):
 
     from . import classes
     api.add_resource(classes.ApiAddClasses, '/api/addclasses')
+    api.add_resource(classes.ApiMyClass, '/api/myclasses')
+    api.add_resource(classes.ApiAddResource, '/api/addresource')
+    api.add_resource(classes.ApiMyResources, '/api/myresources')
+
+    from . import study
+    api.add_resource(study.ApiMyStudy, '/api/mystudy')
+    api.add_resource(study.ApiAddStudy, '/api/addstudy')
+    api.add_resource(study.ApiStudyResource, '/api/studyresource')
+
 

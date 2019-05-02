@@ -17,3 +17,11 @@ CLASSES_CATEGORY = {
     4: '数学',
     5: '英语',
 }
+
+RESOURCE_CATEGORY = {
+    0: 'unknown',
+    1: '文本',
+    2: '图片',
+    3: '视频',
+    4: '其他'
+}

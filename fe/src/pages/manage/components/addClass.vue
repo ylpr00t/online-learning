@@ -1,38 +1,50 @@
 <template>
-  <div id="container">
-    <div class="center">
-    <el-row>
-      <el-col :span="3"><el-tag>课程名:</el-tag></el-col>
-      <el-col :span="12"><el-input v-model="name" placeholder="课程名"></el-input></el-col>
-    </el-row>
-    <br/>
-    <el-row>
-      <el-col :span="3"><el-tag>课程说明:</el-tag></el-col>
-      <el-col :span="12"><el-input
-        type="textarea"
-        :autosize="{ minRows: 2, maxRows: 4}"
-        placeholder="请输入内容"
-        v-model="explain"></el-input></el-col>
-    </el-row>
-    <br/>
-    <el-row>
-      <el-col :span="3"><el-tag>课程分类:</el-tag></el-col>
-      <el-col :span="12">
-        <el-select v-model="category" placeholder="请选择课程分类">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-col>
-    </el-row>
-    <br/>
-    <el-row>
-      <el-button type="primary" :span="4" @click="pushData()">提交数据</el-button>
-    </el-row>
-  </div>
+  <div id="c_container">
+
+    <el-container>
+      <el-main>
+        <i class="el-icon-circle-plus-outline">新建课程</i>
+        <hr/><br/>
+        <el-row type="flex" justify="center">
+          <el-col :span="2"><el-tag>课程名称:</el-tag></el-col>
+          <el-col :span="8"><el-input v-model="name" placeholder="课程名"></el-input></el-col>
+        </el-row>
+        <br/>
+
+        <el-row type="flex" justify="center">
+          <el-col :span="2"><el-tag>课程说明:</el-tag></el-col>
+          <el-col :span="8"><el-input
+            type="textarea"
+            :autosize="{ minRows: 4, maxRows: 6}"
+            placeholder="请输入内容"
+            v-model="explain"></el-input></el-col>
+        </el-row>
+        <br/>
+
+        <el-row type="flex" justify="center">
+          <el-col :span="2">
+            <el-tag>课程分类:</el-tag>
+          </el-col>
+          <el-col :span="8">
+            <el-select v-model="category" placeholder="请选择课程分类">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+        <br/>
+
+        <el-row type="flex" justify="center">
+          <el-col :span="2">
+            <el-button type="primary" :span="4" @click="pushData()">提交数据</el-button>
+          </el-col>
+        </el-row>
+      </el-main>
+    </el-container>
   </div>
 </template>
 
@@ -122,5 +134,16 @@
     }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
+  #c_container
+    width 100%
+    height 100%
+    overflow hidden
+    display: flex
+    align-items center
+    .c_center
+      width 100%
+      height 100%
+      overflow auto
+      align-items center
 </style>

@@ -31,4 +31,27 @@ class Classes(db.Model):
     name = db.Column(db.String(128), nullable=False)
     category = db.Column(db.Integer, nullable=False)
     explain = db.Column(db.String(1024), nullable=False)
+    status = db.Column(db.String(10), nullable=False, default='normal')
+    create_time = db.Column(db.DateTime, default=datetime.datetime.now())
+
+
+class Resources(db.Model):
+    __tablename__ = 'ak_resources'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    classes_id = db.Column(db.Integer, db.ForeignKey("ak_classes.id"), nullable=False)
+    name = db.Column(db.String(128), nullable=False)
+    desc = db.Column(db.String(128), nullable=False) # 资料描述
+    category = db.Column(db.Integer, nullable=False)
+    content = db.Column(db.String(1024), nullable=False)
+    status = db.Column(db.String(10), nullable=False, default='normal')
+    create_time = db.Column(db.DateTime, default=datetime.datetime.now())
+
+
+class Study(db.Model):
+    __tablename__ = 'ak_study'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("ak_user.id"), nullable=False)
+    classes_id = db.Column(db.Integer, db.ForeignKey("ak_classes.id"), nullable=False)
+    explain = db.Column(db.String(1024), nullable=False)
+    status = db.Column(db.String(10), nullable=False, default='normal')
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())

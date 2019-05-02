@@ -2,10 +2,14 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import home from '../components/home.vue'
 import myStudy from '../components/myStudy.vue'
-import addStudy from '../components/addStudy.vue'
+import resourceInfo from '../components/resourceInfo'
 import myClass from '../components/myClass.vue'
+import myClassInfo from '../components/myClassInfo.vue'
 import addClass from '../components/addClass.vue'
-import myInfo from "../components/myInfo";
+import myInfo from "../components/myInfo.vue"
+import manage from '../components/manage.vue'
+import set from '../components/set.vue'
+import explain from '../components/explain.vue'
 
 Vue.use(Router)
 
@@ -19,7 +23,12 @@ export default new Router({
         {
           path: '/',
           name: 'home',
-          component: home,
+          component: manage,
+        },
+        {
+          path: '/manage',
+          name: 'manage',
+          component: manage
         },
         {
           path: '/myStudy',
@@ -27,14 +36,19 @@ export default new Router({
           component: myStudy
         },
         {
-          path: '/addStudy',
-          name: 'addStudy',
-          component: addStudy
+          path: '/resourceInfo',
+          name: 'resourceInfo',
+          component: resourceInfo
         },
         {
           path: '/myClass',
           name: 'myClass',
           component: myClass
+        },
+        {
+          path: '/myClassInfo',
+          name: 'myClassInfo',
+          component: myClassInfo
         },
         {
           path: '/addClass',
@@ -49,13 +63,13 @@ export default new Router({
         {
           path: '/set',
           name: 'set',
-          component: home,
+          component: set,
         },
         {
           path: '/explain',
           name: 'explain',
-          component: home,
-        }
+          component: explain,
+        },
       ]
     },
   ]

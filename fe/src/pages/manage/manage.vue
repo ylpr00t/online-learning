@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="fillcontain">
+  <div id="app">
     <router-view></router-view>
   </div>
 </template>
@@ -11,7 +11,11 @@
 </script>
 
 <style lang="less" scoped>
-  @import './style/common';
+  html,body,#app {
+    height: 100%;
+    width: 100%;
+    background: #8cc5ff;
+  }
 </style>
 
 
