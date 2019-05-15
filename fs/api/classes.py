@@ -116,13 +116,13 @@ class ApiMyResources(restful.Resource):
         args = self.reqparser.parse_args()
         user_id = int(current_identity)
         classes_id = args.get('classes_id', -1)
-        classes = db.session.query(model.Classes) \
-                .filter(model.Classes.user_id == user_id) \
-                .filter(model.Classes.id == classes_id) \
-                .filter(model.Classes.status == 'normal') \
-                .first()
-        if classes is None:
-            return format_response(-400, '此用户没有该课程')
+
+        s = db.session.query(model.Study) \
+            .filter(model.Study.user_id == user_id) \
+            .filter(model.Study.classes_id == classes_id) \
+            .first()
+        if s is None:
+            return format_response(-400, '此用户没有添加该课程的学习')
 
         resources = db.session.query(model.Resources) \
                 .filter(model.Resources.classes_id == classes_id) \

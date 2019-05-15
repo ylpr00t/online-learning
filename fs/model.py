@@ -6,8 +6,9 @@ from werkzeug.security import  generate_password_hash, check_password_hash
 class User(db.Model):
     __tablename__ = 'ak_user'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(64), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=True)
+    username = db.Column(db.String(64), unique=False, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+    is_admin = db.Column(db.Integer, nullable=False, default=0)
     status = db.Column(db.String(64), nullable=False, default='normal')# normal, delete
 
     # 将get和set方法变成属性,这里的password不直接对外暴露,只能通过setter将pshash存入数据库
@@ -21,6 +22,15 @@ class User(db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+
+class UserInfo(db.Model):
+    __tablename__ = 'ak_userinfo'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('ak_user.id'), nullable=False)
+    real_name = db.Column(db.String(128), nullable=False)
+    user_email = db.Column(db.String(128), nullable=False)
+    user_address = db.Column(db.String(128), nullable=False)
 
 
 class Classes(db.Model):
