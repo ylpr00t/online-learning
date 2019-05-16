@@ -26,8 +26,8 @@
           <div class="btn-box">
             <label class="label"></label>
             <button class="entry-btn" v-if="flowType === 1" @click="login_func()">登录</button>
-            <button class="entry-btn" v-else-if="flowType === 2" @click="red_func()">注册</button>
-            <button class="entry-btn" v-else-if="flowType === 3" @click="red_func(2)">修改</button>
+            <button class="entry-btn" v-else-if="flowType === 2" @click="register_func()">注册</button>
+            <button class="entry-btn" v-else-if="flowType === 3" @click="register_func(2)">修改</button>
             <div class="regFog" v-if="flowType === 1">
               <span class="option mcarloData-btn" @click="flowType = 2;initInp_();">立即注册</span>
               <span class="option mcarloData-btn" @click="flowType = 3;initInp_()">忘记密码</span>
@@ -121,7 +121,7 @@
         }
         this.onClickLogin()
       },
-      red_func(type) {
+      register_func(type) {
         var message = this.verificationVal_(2)
         if (message) {
           alert(message)
@@ -153,7 +153,14 @@
               exdate.setDate(exdate.getDate() + (99) || 0)
               document.cookie = 'username' + '=' + escape(request.username) + ';expires=' + exdate.toGMTString()
               document.cookie = 'password' + '=' + escape(request.password) + ';expires=' + exdate.toGMTString()
-              document.cookie = 'token' + '=' + escape(data['data']['access_token']) + ';expires=' + exdate.toGMTString()
+              if(data['data']['administrator'] == false) {
+                if(sessionStorage.getItem('super_token') != null)
+                  sessionStorage.removeItem('super_token')
+                document.cookie = 'token' + '=' + escape(data['data']['access_token']) + ';expires=' + exdate.toGMTString()
+              } else {
+                sessionStorage.setItem('super_token', data['data']['super_token'])
+                document.cookie = 'token' + '=' + escape(data['data']['super_token']) + ';expires=' + exdate.toGMTString()
+              }
               window.location.href = "manage.html"
             }
           },
@@ -164,25 +171,28 @@
       },
 
       onClickRegister_ () {
-        alert("register")
-        /*
         var request = {
           'username': this.userPhone,
           'password': this.password,
         }
-        this.$http({
-          url: registerUrl,
-          method: 'post',
-          data: request,
-          that: this
-        }).then((response) => {
-          this.scStatis_(request.username, 'register')
-          this.$root.$refs.tip.show_('注册成功')
-          this.flowType = 1
-          this.initInp_()
-          return Promise.resolve()
-        })
-        */
+        $.ajax({
+          type:"POST",
+          contentType: "application/json; charset=utf-8",
+          data: JSON.stringify(request),
+          dataType: "json",
+          url:"http://localhost:8081/api/register",
+          success:function (data) {
+            if (data['code'] == -400)
+              alert(data['message'])
+            else if (data['code'] == 0){
+              alert(data['message'])
+              window.location.href = "login.html"
+            }
+          },
+          error:function (e) {
+            alert("服务器内部出错了，请稍等!!!");
+          }
+        });
       },
     },
   }

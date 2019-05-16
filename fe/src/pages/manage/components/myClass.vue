@@ -104,7 +104,6 @@
       },
       methods: {
         handleEdit(index, row) {
-          console.log(index, row, row.id);
           this.$router.push({
             name: 'myClassInfo',
             params: {
@@ -113,7 +112,47 @@
           })
         },
         handleDelete(index, row) {
-          console.log(index, row);
+          //console.log(index, row);
+          var request = {
+            'classes_id': row.id
+          }
+          /*
+          if (document.cookie.length > 0) {
+            var cStart = document.cookie.indexOf('token' + '=')
+            if (cStart !== -1) {
+              cStart = cStart + 'token'.length + 1
+              var cEnd = document.cookie.indexOf(';', cStart)
+              if (cEnd === -1) {
+                cEnd = document.cookie.length
+              }
+              var token = unescape(document.cookie.substring(cStart, cEnd))
+              $.ajax({
+                type:"POST",
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(request),
+                url:"http://localhost:8081/api/deleteclasses",
+                beforeSend: function(request) {
+                  request.setRequestHeader("Authorization", "JWT "+token);
+                },
+                success:function (data) {
+                  if (data['code'] == -400) {
+                    alert(data['message'])
+                  } else if (data['code'] == 0){
+                    alert(data['message'])
+                  }
+                },
+                error:function (e) {
+                  alert("500")
+                }
+              });
+            }
+          }else{
+            alert('获取token失败')
+          }
+          location.reload()
+          */
         },
       }
     }

@@ -20,6 +20,8 @@ def bind_app(app):
     api.add_resource(classes.ApiMyClass, '/api/myclasses')
     api.add_resource(classes.ApiAddResource, '/api/addresource')
     api.add_resource(classes.ApiMyResources, '/api/myresources')
+    api.add_resource(classes.ApiDeleteClasses, '/api/deleteclasses')
+    api.add_resource(classes.ApiDeleteResource, '/api/deleteresource')
 
     from . import study
     api.add_resource(study.ApiMyStudy, '/api/mystudy')
@@ -31,3 +33,6 @@ def bind_app(app):
 
     from . import myinfo
     api.add_resource(myinfo.ApiMyInfo, '/api/myinfo')
+
+    from . import upload
+    api.add_resource(upload.ApiUpload, '/api/upload')

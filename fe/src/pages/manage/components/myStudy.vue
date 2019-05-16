@@ -1,31 +1,33 @@
 <template>
     <div>
-      <i class="el-icon-goods">我的学习</i>
-      <hr/>
       <el-row>
-        <el-button type="primary" plain @click="dialogVisible = true">
-          <i class="el-icon-circle-plus-outline"></i>添加学习
-        </el-button>
-
-        <el-dialog
-          title="添加学习"
-          :visible.sync="dialogVisible"
-          width="35%"
-          :before-close="handleClose">
-          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="课程通行码" prop="rand_num">
-              <el-input v-model="ruleForm.rand_num"></el-input>
-            </el-form-item>
-            <el-form-item label="课程备注" prop="explain">
-              <el-input v-model="ruleForm.explain"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="dialogVisible=false;submitForm('ruleForm')">确认添加</el-button>
-              <el-button @click="resetForm('ruleForm')">重置</el-button>
-            </el-form-item>
-          </el-form>
-        </el-dialog>
-      </el-row><br/>
+        <el-col :span="6">
+          <i class="el-icon-goods">我的学习</i>
+        </el-col>
+        <el-col :span="5" style="float: right">
+          <el-button type="primary" plain @click="dialogVisible = true" style="float: right">
+            <i class="el-icon-circle-plus-outline"></i>添加学习
+          </el-button>
+          <el-dialog
+            title="添加学习"
+            :visible.sync="dialogVisible"
+            width="35%">
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+              <el-form-item label="课程通行码" prop="rand_num">
+                <el-input v-model="ruleForm.rand_num"></el-input>
+              </el-form-item>
+              <el-form-item label="课程备注" prop="explain">
+                <el-input v-model="ruleForm.explain"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="dialogVisible=false;submitForm('ruleForm')">确认添加</el-button>
+                <el-button @click="resetForm('ruleForm')">重置</el-button>
+              </el-form-item>
+            </el-form>
+          </el-dialog>
+        </el-col>
+      </el-row>
+      <hr/>
 
       <el-row>
         <el-table
@@ -42,10 +44,12 @@
             prop="name">
           </el-table-column>
 
+          <!--
           <el-table-column
             label="课程分类"
             prop="category">
           </el-table-column>
+          -->
 
           <el-table-column
             label="课程所有者"
@@ -64,12 +68,14 @@
 
           <el-table-column
             align="right">
+            <!--
             <template slot="header" slot-scope="scope">
               <el-input
                 v-model="search"
                 size="mini"
                 placeholder="输入关键字搜索"/>
             </template>
+            -->
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -168,13 +174,6 @@
                 classes_id: row.classes_id
               }
             })
-          },
-          handleClose(done) {
-            this.$confirm('确认关闭？')
-              .then(_ => {
-              done();
-            })
-            .catch(_ => {});
           },
           submitForm(formName) {
             this.$refs[formName].validate((valid) => {

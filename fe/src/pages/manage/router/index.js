@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import home from '../components/home.vue'
 import myStudy from '../components/myStudy.vue'
-import resourceInfo from '../components/resourceInfo'
+import resourceInfo from '../components/resourceInfo.vue'
+import resourceShow from '../components/resourceShow.vue'
 import myClass from '../components/myClass.vue'
 import myClassInfo from '../components/myClassInfo.vue'
 import addClass from '../components/addClass.vue'
@@ -39,6 +40,11 @@ export default new Router({
           path: '/resourceInfo',
           name: 'resourceInfo',
           component: resourceInfo
+        },
+        {
+          path: '/resourceShow',
+          name: 'resourceShow',
+          component: resourceShow
         },
         {
           path: '/myClass',

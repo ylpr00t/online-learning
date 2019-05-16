@@ -29,33 +29,42 @@
             <el-form-item label="资源说明" prop="desc">
               <el-input type="textarea" v-model="ruleForm.desc"></el-input>
             </el-form-item>
+
             <div v-if="resourceType === 1">
               <el-form-item label="资源内容" prop="content">
                 <el-input type="textarea" v-model="ruleForm.content" :autosize="{ minRows: 5, maxRows: 50}"></el-input>
               </el-form-item>
             </div>
+
             <div v-else-if="resourceType === 2">
               <el-form-item label="图片文件" prop="content">
                 <el-upload
                   class="upload-demo"
+                  action="http://localhost:8081/api/upload"
                   drag
-                  action="https://jsonplaceholder.typicode.com/posts/"
+                  multiple
                   :show-file-list="true"
-                  multiple>
+                  :data={resource_type:2}
+                  :on-success="upload_success"
+                  :on-error="upload_error">
                   <i class="el-icon-upload"></i>
                   <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
                   <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
                 </el-upload>
               </el-form-item>
             </div>
+
             <div v-else-if="resourceType === 3">
               <el-form-item label="视频文件" prop="content">
                 <el-upload
                   class="upload-demo"
+                  action="http://localhost:8081/api/upload"
                   drag
-                  action="https://jsonplaceholder.typicode.com/posts/"
+                  multiple
                   :show-file-list="true"
-                  multiple>
+                  :data={resource_type:3}
+                  :on-success="upload_success"
+                  :on-error="upload_error">
                   <i class="el-icon-upload"></i>
                   <div class="el-upload__text">将视频拖到此处，或<em>点击上传</em></div>
                   <div class="el-upload__tip" slot="tip">只能上传mp4/avi文件，且不超过500kb</div>
@@ -112,9 +121,6 @@
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                @click="handleEdit(scope.$index, scope.row)">编辑资源</el-button>
-              <el-button
-                size="mini"
                 type="danger"
                 @click="handleDelete(scope.$index, scope.row)">删除资源</el-button>
             </template>
@@ -159,7 +165,7 @@
               content: [
                 { required: true, message: '请填写资源内容' }
               ]
-            }
+            },
           }
         },
         mounted() {
@@ -215,7 +221,44 @@
             console.log(index, row, row.id);
           },
           handleDelete(index, row) {
-            console.log(index, row);
+            //console.log(index, row);
+            var request = {
+              'resource_id': row.id
+            }
+            if (document.cookie.length > 0) {
+              var cStart = document.cookie.indexOf('token' + '=')
+              if (cStart !== -1) {
+                cStart = cStart + 'token'.length + 1
+                var cEnd = document.cookie.indexOf(';', cStart)
+                if (cEnd === -1) {
+                  cEnd = document.cookie.length
+                }
+                var token = unescape(document.cookie.substring(cStart, cEnd))
+                $.ajax({
+                  type:"POST",
+                  async: false,
+                  contentType: "application/json; charset=utf-8",
+                  dataType: "json",
+                  data: JSON.stringify(request),
+                  url:"http://localhost:8081/api/deleteresource",
+                  beforeSend: function(request) {
+                    request.setRequestHeader("Authorization", "JWT "+token);
+                  },
+                  success:function (data) {
+                    if (data['code'] == -400) {
+                      alert(data['message'])
+                    } else if (data['code'] == 0){
+                      alert(data['message'])
+                    }
+                  },
+                  error:function (e) {
+                    alert("500")
+                  }
+                });
+              }
+            }else{
+              alert('获取token失败')
+            }
           },
           handleClose(done) {
             this.$confirm('确认关闭？')
@@ -229,6 +272,10 @@
               if (valid) {
                 //这里的this是vue中的this,当进入ajax之后,this就是ajax中的this,所以要先记录vue中的this
                 var this_ = this
+                if(this.ruleForm.content == '') {
+                  alert('内容为空或文件上传失败')
+                  return
+                }
                 var request = {
                   'classes_id': this.classes_id,
                   'name': this.ruleForm.name,
@@ -287,6 +334,13 @@
           },
           resetForm(formName) {
             this.$refs[formName].resetFields();
+          },
+          upload_success(res, file) {
+            this.ruleForm.content = res['data']['filename']
+            //alert(res['message'] + res['data']['filename'])
+          },
+          upload_error(res, file) {
+            this.ruleForm.content = ''
           }
         }
     }

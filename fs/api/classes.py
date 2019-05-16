@@ -65,6 +65,28 @@ class ApiMyClass(restful.Resource):
         return format_response(0, 'success', {'myclasses': format_classes})
 
 
+class ApiDeleteClasses(restful.Resource):
+    def __init__(self):
+        self.reqparser = reqparse.RequestParser()
+        self.reqparser.add_argument('classes_id', type=int, location='json', required=True)
+    @jwt_required()
+    def post(self):
+        assert current_identity is not None
+        user_id = int(current_identity)
+        args = self.reqparser.parse_args()
+        c = db.session.query(model.Classes) \
+                .filter(model.Classes.user_id == user_id) \
+                .filter(model.Classes.id == args['classes_id']) \
+                .filter(model.Classes.status == 'normal') \
+                .first()
+        if c is None:
+            return format_response(-400, '没有查询到此课程', {})
+        c.status = 'delete'
+        db.session.add(c)
+        db.session.commit()
+        return format_response(0, 'success', {})
+
+
 class ApiAddResource(restful.Resource):
     def __init__(self):
         self.reqparser = reqparse.RequestParser()
@@ -73,6 +95,7 @@ class ApiAddResource(restful.Resource):
         self.reqparser.add_argument('category', type=int, location='json', required=True)
         self.reqparser.add_argument('desc', type=str, location='json', required=True)
         self.reqparser.add_argument('content', type=str, location='json', required=True)
+
     @jwt_required()
     def post(self):
         assert current_identity is not None
@@ -110,6 +133,7 @@ class ApiMyResources(restful.Resource):
     def __init__(self):
         self.reqparser = reqparse.RequestParser()
         self.reqparser.add_argument('classes_id', type=int, location='json', required=True)
+
     @jwt_required()
     def post(self):
         assert current_identity is not None
@@ -135,8 +159,40 @@ class ApiMyResources(restful.Resource):
             r_item['id'] = r.id
             r_item['name'] = r.name
             r_item['category'] = r.category
+            if r.category == 1:
+                r_item['category_ch'] = '文本'
+            elif r.category == 2:
+                r_item['category_ch'] = '图片'
+            elif r.category == 3:
+                r_item['category_ch'] = '视频'
+            else:
+                r_item['category_ch'] = '未识别'
             r_item['desc'] = r.desc
-            r_item['content'] = r.content
+            if r.category == 2 or r.category == 3:
+                r_item['content'] = 'http://127.0.0.1:8080/' + r.content
+            else:
+                r_item['content'] = r.content
             r_item['create_time'] = r.create_time.strftime("%Y-%m-%d %H:%M:%S")
             format_resources.append(r_item)
         return format_response(0, 'success', {'myresources': format_resources})
+
+
+class ApiDeleteResource(restful.Resource):
+    def __init__(self):
+        self.reqparser = reqparse.RequestParser()
+        self.reqparser.add_argument('resource_id', type=int, location='json', required=True)
+
+    @jwt_required()
+    def post(self):
+        assert current_identity is not None
+        args = self.reqparser.parse_args()
+        r = db.session.query(model.Resources) \
+                .filter(model.Resources.id == args['resource_id']) \
+                .filter(model.Resources.status == 'normal') \
+                .first()
+        if r is None:
+            return format_response(-400, '没有查询到此资料', {})
+        r.status = 'delete'
+        db.session.add(r)
+        db.session.commit()
+        return format_response(0, 'success', {})

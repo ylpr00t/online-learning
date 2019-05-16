@@ -34,6 +34,10 @@
             prop="name">
           </el-table-column>
           <el-table-column
+            label="资料类型"
+            prop="category_ch">
+          </el-table-column>
+          <el-table-column
             label="资料描述"
             prop="desc">
           </el-table-column>
@@ -46,7 +50,7 @@
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
+                @click="resource_show(scope.$index, scope.row)">查看详情</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -68,26 +72,6 @@
           return {
             classes_id: this.$route.params.classes_id,
             tableData: [],
-            ruleForm: {
-              name: '',
-              desc: '',
-              content: '',
-            },
-            rules: {
-              name: [
-                { required: true, message: '请输入资源名称', trigger: 'blur' },
-                { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-              ],
-              category: [
-                { required: true, message: '请选择资源分类', trigger: 'change' }
-              ],
-              desc: [
-                { required: true, message: '请填写资源描述', trigger: 'blur' }
-              ],
-              content: [
-                { required: true, message: '请填写资源内容' }
-              ]
-            }
           }
         },
         mounted() {
@@ -121,7 +105,6 @@
                   }
                   else if (data['code'] == 0){
                     this_.tableData = data['data']['myresources']
-                    console.log(this_.tableData)
                   }
                 },
                 error:function (e) {
@@ -134,15 +117,18 @@
           }
         },
         methods: {
-          handleEdit(index, row) {
-            console.log(index, row, row.id);
-          },
-          handleClose(done) {
-            this.$confirm('确认关闭？')
-              .then(_ => {
-              done();
+          resource_show(index, row) {
+            console.log(index)
+            console.log(row)
+            this.$router.push({
+              name: 'resourceShow',
+              params: {
+                classes_id: this.classes_id,
+                resource_name: row.name,
+                resource_type: row.category,
+                resource_content: row.content
+              }
             })
-            .catch(_ => {});
           },
         }
     }

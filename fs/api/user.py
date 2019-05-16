@@ -25,6 +25,7 @@ class ApiRegister(restful.Resource):
         u = model.User()
         u.username = args.get('username', 'noname')
         u.password = args.get('password', 'nopass')
+        u.is_admin = 0
         u.status = 'normal'
         db.session.add(u)
         db.session.commit()
