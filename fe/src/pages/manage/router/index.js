@@ -6,6 +6,8 @@ import resourceInfo from '../components/resourceInfo.vue'
 import resourceShow from '../components/resourceShow.vue'
 import myClass from '../components/myClass.vue'
 import myClassInfo from '../components/myClassInfo.vue'
+import myClassMem from '../components/myClassMem.vue'
+import studyTrace from '../components/studyTrace.vue'
 import addClass from '../components/addClass.vue'
 import myInfo from "../components/myInfo.vue"
 import manage from '../components/manage.vue'
@@ -55,6 +57,16 @@ export default new Router({
           path: '/myClassInfo',
           name: 'myClassInfo',
           component: myClassInfo
+        },
+        {
+          path: '/myClassMem',
+          name: 'myClassMem',
+          component: myClassMem
+        },
+        {
+          path: '/studyTrace',
+          name: 'studyTrace',
+          component: studyTrace
         },
         {
           path: '/addClass',

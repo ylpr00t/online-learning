@@ -123,6 +123,7 @@
             this.$router.push({
               name: 'resourceShow',
               params: {
+                resource_id: row.id,
                 classes_id: this.classes_id,
                 resource_name: row.name,
                 resource_type: row.category,

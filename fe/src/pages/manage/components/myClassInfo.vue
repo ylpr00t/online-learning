@@ -23,6 +23,9 @@
               <el-button @click="resourceType=2; resetForm('ruleForm')">图片</el-button>
               <el-button @click="resourceType=3; resetForm('ruleForm')">视频</el-button>
             </el-form-item>
+            <el-form-item label="资源积分" prop="e_coin">
+              <el-input v-model="ruleForm.e_coin"></el-input>
+            </el-form-item>
             <el-form-item label="资源名称" prop="name">
               <el-input v-model="ruleForm.name"></el-input>
             </el-form-item>
@@ -32,7 +35,7 @@
 
             <div v-if="resourceType === 1">
               <el-form-item label="资源内容" prop="content">
-                <el-input type="textarea" v-model="ruleForm.content" :autosize="{ minRows: 5, maxRows: 50}"></el-input>
+                <el-input type="textarea" v-model="ruleForm.content"></el-input>
               </el-form-item>
             </div>
 
@@ -147,6 +150,7 @@
             resourceType: 1,
             tableData: [],
             ruleForm: {
+              e_coin: '0',
               name: '',
               desc: '',
               content: '',
@@ -155,6 +159,9 @@
               name: [
                 { required: true, message: '请输入资源名称', trigger: 'blur' },
                 { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
+              ],
+              e_coin: [
+                {required: true, message: '请输入课程可获得的积分'}
               ],
               category: [
                 { required: true, message: '请选择资源分类', trigger: 'change' }
@@ -278,6 +285,7 @@
                 }
                 var request = {
                   'classes_id': this.classes_id,
+                  'e_coin': this.ruleForm.e_coin,
                   'name': this.ruleForm.name,
                   'category': 0,
                   'desc': this.ruleForm.desc,

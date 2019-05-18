@@ -37,11 +37,14 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
-              @click="handleEdit(scope.$index, scope.row)">课程资源</el-button>
+              @click="classes_resource(scope.$index, scope.row)">课程资源</el-button>
+            <el-button
+              size="mini"
+              @click="classes_member(scope.$index, scope.row)">课程学员</el-button>
             <el-button
               size="mini"
               type="danger"
-              @click="handleDelete(scope.$index, scope.row)">删除课程</el-button>
+              @click="classes_res_del(scope.$index, scope.row)">删除课程</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -103,7 +106,7 @@
         }
       },
       methods: {
-        handleEdit(index, row) {
+        classes_resource(index, row) {
           this.$router.push({
             name: 'myClassInfo',
             params: {
@@ -111,7 +114,15 @@
             }
           })
         },
-        handleDelete(index, row) {
+        classes_member(index, row) {
+          this.$router.push({
+            name: 'myClassMem',
+            params: {
+              classes_id: row.id
+            }
+          })
+        },
+        classes_res_del(index, row) {
           //console.log(index, row);
           var request = {
             'classes_id': row.id

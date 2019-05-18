@@ -7,6 +7,9 @@
           <el-form-item label="用户名">
             <label>{{username}}</label>
           </el-form-item>
+          <el-form-item label="ECOIN">
+            <label>{{e_coin}}</label>
+          </el-form-item>
           <el-form-item label="真实姓名">
             <label>{{realname}}</label>
           </el-form-item>
@@ -39,6 +42,7 @@
           realname: '',
           useremail: '',
           useraddress: '',
+          e_coin: 0,
           classes_sum: 10,
           category: [],
         }
@@ -73,6 +77,7 @@
                   this_.realname = data['data']['myinfo']['realname']
                   this_.useremail = data['data']['myinfo']['useremail']
                   this_.useraddress = data['data']['myinfo']['useraddress']
+                  this_.e_coin = data['data']['myinfo']['e_coin']
                   this_.classes_num = data['data']['myinfo']['classes_num']
                   this_.category = data['data']['myinfo']['category']
                 }

@@ -34,10 +34,12 @@
           :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
           style="width: 100%">
 
+          <!--
           <el-table-column
             label="学习ID"
             prop="classes_id">
           </el-table-column>
+          -->
 
           <el-table-column
             label="课程名称"
@@ -54,6 +56,11 @@
           <el-table-column
             label="课程所有者"
             prop="username">
+          </el-table-column>
+
+          <el-table-column
+            label="获得ECOIN"
+            prop="e_coin">
           </el-table-column>
 
           <el-table-column

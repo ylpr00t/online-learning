@@ -53,6 +53,7 @@ class Resources(db.Model):
     desc = db.Column(db.String(128), nullable=False) # 资料描述
     category = db.Column(db.Integer, nullable=False)
     content = db.Column(db.String(1024), nullable=False)
+    e_coin = db.Column(db.Integer, nullable=False, default=0)
     status = db.Column(db.String(10), nullable=False, default='normal')
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
 
@@ -62,6 +63,16 @@ class Study(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey("ak_user.id"), nullable=False)
     classes_id = db.Column(db.Integer, db.ForeignKey("ak_classes.id"), nullable=False)
+    e_coin = db.Column(db.Integer, nullable=False, default=0)
     explain = db.Column(db.String(1024), nullable=False)
     status = db.Column(db.String(10), nullable=False, default='normal')
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
+
+
+class StudyTrace(db.Model):
+    __tablename__ = 'ak_study_trace'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    study_id = db.Column(db.Integer, db.ForeignKey("ak_study.id"), nullable=False)
+    study_ecoin = db.Column(db.Integer, nullable=False)
+    study_info = db.Column(db.String(1024), nullable=False, default='empty')
+    status = db.Column(db.String(10), nullable=False, default='normal')

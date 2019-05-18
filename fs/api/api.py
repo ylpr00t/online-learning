@@ -22,11 +22,14 @@ def bind_app(app):
     api.add_resource(classes.ApiMyResources, '/api/myresources')
     api.add_resource(classes.ApiDeleteClasses, '/api/deleteclasses')
     api.add_resource(classes.ApiDeleteResource, '/api/deleteresource')
+    api.add_resource(classes.ApiMyClassesMem, '/api/myclassesmem')
 
     from . import study
     api.add_resource(study.ApiMyStudy, '/api/mystudy')
     api.add_resource(study.ApiAddStudy, '/api/addstudy')
     api.add_resource(study.ApiStudyResource, '/api/studyresource')
+    api.add_resource(study.ApiUpdateECoin, '/api/update_ecoin')
+    api.add_resource(study.ApiStudyTrace, '/api/study_trace')
 
     from . import setting
     api.add_resource(setting.ApiSetting, '/api/setting')

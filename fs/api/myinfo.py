@@ -19,11 +19,19 @@ class ApiMyInfo(restful.Resource):
                                model.UserInfo.user_email,
                                model.UserInfo.user_address).first()
 
+        studys = db.session.query(model.Study) \
+                .filter(model.Study.user_id == user_id) \
+                .all()
+        e_coin = 0
+        for study in studys:
+            e_coin += study.e_coin
+
         format_userinfo = {}
         format_userinfo['username'] = userinfo[0] if userinfo[0] else 'undefined'
         format_userinfo['realname'] = userinfo[1] if userinfo[1] else 'undefined'
         format_userinfo['useremail'] = userinfo[2] if userinfo[2] else 'undefined'
         format_userinfo['useraddress'] = userinfo[3] if userinfo[3] else 'undefined'
+        format_userinfo['e_coin'] = e_coin
         format_userinfo['classes_num'] = 10
         format_userinfo['category'] = ['数学', '计算机', '金融']
         return format_response(0, 'success', {'myinfo': format_userinfo})

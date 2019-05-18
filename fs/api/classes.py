@@ -91,6 +91,7 @@ class ApiAddResource(restful.Resource):
     def __init__(self):
         self.reqparser = reqparse.RequestParser()
         self.reqparser.add_argument('classes_id', type=int, location='json', required=True)
+        self.reqparser.add_argument('e_coin', type=str, location='json', required=True)
         self.reqparser.add_argument('name', type=str, location='json', required=True)
         self.reqparser.add_argument('category', type=int, location='json', required=True)
         self.reqparser.add_argument('desc', type=str, location='json', required=True)
@@ -110,6 +111,7 @@ class ApiAddResource(restful.Resource):
         if classes is None:
             return format_response(-400, '此用户没有该课程')
 
+        e_coin = int(args.get('e_coin', '0'))
         name = args.get('name', '')
         category = args.get('category', -1)
         desc = args.get('desc', '')
@@ -119,6 +121,7 @@ class ApiAddResource(restful.Resource):
 
         r = model.Resources()
         r.classes_id = classes_id
+        r.e_coin = e_coin
         r.name = name
         r.category = category
         r.desc = desc
@@ -141,12 +144,12 @@ class ApiMyResources(restful.Resource):
         user_id = int(current_identity)
         classes_id = args.get('classes_id', -1)
 
-        s = db.session.query(model.Study) \
-            .filter(model.Study.user_id == user_id) \
-            .filter(model.Study.classes_id == classes_id) \
-            .first()
-        if s is None:
-            return format_response(-400, '此用户没有添加该课程的学习')
+        #s = db.session.query(model.Study) \
+        #    .filter(model.Study.user_id == user_id) \
+        #    .filter(model.Study.classes_id == classes_id) \
+        #    .first()
+        #if s is None:
+        #    return format_response(-400, '此用户没有添加该课程的学习')
 
         resources = db.session.query(model.Resources) \
                 .filter(model.Resources.classes_id == classes_id) \
@@ -196,3 +199,48 @@ class ApiDeleteResource(restful.Resource):
         db.session.add(r)
         db.session.commit()
         return format_response(0, 'success', {})
+
+
+class ApiMyClassesMem(restful.Resource):
+    def __init__(self):
+        self.reqarser = reqparse.RequestParser()
+        self.reqarser.add_argument('classes_id', type=int, location='json', required=True)
+
+    @jwt_required()
+    def post(self):
+        assert current_identity is not None
+        args = self.reqarser.parse_args()
+        classes_id = args.get('classes_id', 0)
+        users = db.session.query(model.Study) \
+                .filter(model.Study.classes_id == classes_id) \
+                .filter(model.Study.status == 'normal') \
+                .with_entities(model.Study.user_id, model.Study.e_coin) \
+                .all()
+
+        format_users = []
+        for user in users:
+            item = {}
+            user_id = user[0]
+            e_coin = user[1]
+            user_info = db.session.query(model.User) \
+                .outerjoin(model.UserInfo, model.UserInfo.user_id == user_id) \
+                .filter(model.User.id == user_id) \
+                .filter(model.User.status == 'normal') \
+                .with_entities(model.User.username,
+                               model.UserInfo.real_name,
+                               model.UserInfo.user_email) \
+                .first()
+            item['user_id'] = user_id
+            item['username'] = user_info[0]
+            item['realname'] = user_info[1] if user_info[1] else '未定义'
+            item['useremail'] = user_info[2] if user_info[2] else '未定义'
+            item['e_coin'] = e_coin
+            format_users.append(item)
+
+        return format_response(0, 'success', {
+            'users': format_users
+        })
+
+
+
+
