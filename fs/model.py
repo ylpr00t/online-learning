@@ -73,6 +73,7 @@ class StudyTrace(db.Model):
     __tablename__ = 'ak_study_trace'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     study_id = db.Column(db.Integer, db.ForeignKey("ak_study.id"), nullable=False)
+    resource_id = db.Column(db.Integer, db.ForeignKey("ak_resources.id"), nullable=False)
     study_ecoin = db.Column(db.Integer, nullable=False)
     study_info = db.Column(db.String(1024), nullable=False, default='empty')
     status = db.Column(db.String(10), nullable=False, default='normal')

@@ -61,6 +61,7 @@ class ApiMyStudy(restful.Resource):
         format_studys = []
         for s in mystudys:
             s_item = {}
+            s_item['user_id'] = user_id
             s_item['username'] = s[0]
             s_item['classes_id'] = s[1]
             s_item['name'] = s[2]
@@ -106,10 +107,19 @@ class ApiUpdateECoin(restful.Resource):
             .first()
         if s is None:
             return format_response(-400, '没有查询到次学习', {})
-        s.e_coin += e_coin
+
+        # 追踪记录中如果存在此学习记录，不不加e_coin
+        st = db.session.query(model.StudyTrace) \
+            .filter(model.StudyTrace.study_id == s.id) \
+            .filter(model.StudyTrace.resource_id == resource_id) \
+            .first()
+        if st is None:
+            s.e_coin += e_coin
+
         # 更新学习追踪
         st = model.StudyTrace()
         st.study_id = s.id
+        st.resource_id = resource_id
         st.study_ecoin = e_coin
         st.study_info = '%s:查看资源 %s' % (str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")), r.name)
         st.status = 'normal'
@@ -121,13 +131,14 @@ class ApiUpdateECoin(restful.Resource):
 class ApiStudyTrace(restful.Resource):
     def __init__(self):
         self.reqparser = reqparse.RequestParser()
+        self.reqparser.add_argument('user_id', type=int, location='json', required=True)
         self.reqparser.add_argument('classes_id', type=int, location='json', required=True)
 
     @jwt_required()
     def post(self):
         assert current_identity is not None
         args = self.reqparser.parse_args()
-        user_id = int(current_identity)
+        user_id = args.get('user_id', 0)
         classes_id = args.get('classes_id', 0)
         # 查询study_id
         s = db.session.query(model.Study) \

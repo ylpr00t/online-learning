@@ -8,6 +8,7 @@ import myClass from '../components/myClass.vue'
 import myClassInfo from '../components/myClassInfo.vue'
 import myClassMem from '../components/myClassMem.vue'
 import studyTrace from '../components/studyTrace.vue'
+import studyTrace2 from '../components/studyTrace2.vue'
 import addClass from '../components/addClass.vue'
 import myInfo from "../components/myInfo.vue"
 import manage from '../components/manage.vue'
@@ -67,6 +68,11 @@ export default new Router({
           path: '/studyTrace',
           name: 'studyTrace',
           component: studyTrace
+        },
+        {
+          path: '/studyTrace2',
+          name: 'studyTrace2',
+          component: studyTrace2
         },
         {
           path: '/addClass',

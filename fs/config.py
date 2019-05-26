@@ -5,9 +5,11 @@ APP_FLASK_KEY = 'OZyUa72B824FzrIG'
 
 JWT_EXPIRE = 28800
 
-DB_URI = 'mysql+pymysql://dbuser1:sa@localhost/db1?charset=utf8'
+DB_URI = 'mysql+pymysql://root:sa@localhost/db1?charset=utf8'
 
 IS_ALLOW_ORIGIN = True
+
+CSV_FILE_BASE = '../etc/csv/'
 
 CLASSES_CATEGORY = {
     0: 'unknown',

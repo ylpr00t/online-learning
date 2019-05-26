@@ -37,6 +37,7 @@
       name: "studyTrace.vue",
       data()  {
         return {
+          user_id: this.$route.params.user_id,
           classes_id: this.$route.params.classes_id,
           tableData: []
         }
@@ -44,6 +45,7 @@
       mounted() {
         var this_ = this
         var request = {
+          'user_id': this.user_id,
           'classes_id': this.classes_id
         }
         if (document.cookie.length > 0) {

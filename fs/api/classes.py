@@ -5,8 +5,11 @@ from fs.utils import format_response
 from fs.init_db import db
 from fs import model
 from fs import config
+from sqlalchemy import func
 import random
 import datetime
+import csv
+import string
 
 
 class ApiAddClasses(restful.Resource):
@@ -240,6 +243,91 @@ class ApiMyClassesMem(restful.Resource):
         return format_response(0, 'success', {
             'users': format_users
         })
+
+
+class ApiExportMemScore(restful.Resource):
+    def __init__(self):
+        self.reqarser = reqparse.RequestParser()
+        self.reqarser.add_argument('classes_id', type=int, location='json', required=True)
+        self.reqarser.add_argument('sum_score', type=int, location='json', required=True)
+        self.reqarser.add_argument('five_level', type=int, location='json', required=True)
+
+    def generate_file_name(self, filename):
+        random_str =  ''.join(random.sample(string.ascii_letters+string.digits, 32))
+        random_str = random_str + '.' + filename.split('.')[1]
+        return random_str
+
+    def get_level(self, score):
+        if 90 <= score < 100:
+            return 'A'
+        elif 70 <= score < 90:
+            return 'B'
+        elif 60 <= score < 70:
+            return 'C'
+        elif 30 <= score < 60:
+            return 'D'
+        elif 0 <= score <30:
+            return 'E'
+        else:
+            return 'ERROR'
+
+    @jwt_required()
+    def post(self):
+        assert current_identity is not None
+        args = self.reqarser.parse_args()
+        classes_id = args.get('classes_id', 0)
+        sum_score = args.get('sum_score', 100)
+        five_level = args.get('five_level', 0)
+
+        # 查询所有用户
+        users = db.session.query(model.Study) \
+                .filter(model.Study.classes_id == classes_id) \
+                .filter(model.Study.status == 'normal') \
+                .with_entities(model.Study.user_id, model.Study.e_coin) \
+                .all()
+
+        # 查询该课程总的E_COIN
+        e_coin_sum = db.session.query(func.sum(model.Resources.e_coin)).filter(model.Resources.classes_id == classes_id).scalar()
+
+        # 查询每个用户的具体信息
+        csv_headers = ['ID', 'USERNAME', 'REALNAME', 'ECOIN', 'SCORE']
+        if five_level == 1:
+            csv_headers.append('LEVEL')
+
+        csv_rows = []
+        data_id = 1
+        for user in users:
+            item = {}
+            user_id = user[0]
+            e_coin = user[1]
+            user_info = db.session.query(model.User) \
+                .outerjoin(model.UserInfo, model.UserInfo.user_id == user_id) \
+                .filter(model.User.id == user_id) \
+                .filter(model.User.status == 'normal') \
+                .with_entities(model.User.username, model.UserInfo.real_name) \
+                .first()
+            item['ID'] = data_id
+            item['USERNAME'] = user_info[0]
+            item['REALNAME'] = user_info[1] if user_info[1] else '未定义'
+            item['REALNAME'] = item['REALNAME'].encode('utf-8')
+            item['ECOIN'] = e_coin
+            item['SCORE'] = str(round(e_coin / e_coin_sum, 2) * sum_score)
+            if five_level == 1:
+                item['LEVEL'] = self.get_level(float(item['SCORE']))
+            csv_rows.append(item)
+            data_id += 1
+
+        filename = self.generate_file_name('.csv')
+        csv_filename ='./etc/csv/' + filename
+        with open(csv_filename, 'w') as f:
+            f_csv = csv.DictWriter(f, csv_headers)
+            f_csv.writeheader()
+            f_csv.writerows(csv_rows)
+
+        return format_response(0, 'success', {
+            'filename': filename
+        })
+
 
 
 

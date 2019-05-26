@@ -50,9 +50,13 @@ server {
 	location ~ \.(jpg|png|jpeg|gif|bmp)$ {
 		root /home/work/PycharmProjects/flask-py3/etc/img;
 	}
-
+    # video server
 	location ~ \.(avi|mp4|flv)$ {
 		root /home/work/PycharmProjects/flask-py3/etc/video;
+	}
+	# csv file server
+	location ~ \.(csv)${
+	    root /home/work/PycharmProjects/flask-py3/etc/csv;
 	}
 
 	# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000

@@ -23,6 +23,7 @@ def bind_app(app):
     api.add_resource(classes.ApiDeleteClasses, '/api/deleteclasses')
     api.add_resource(classes.ApiDeleteResource, '/api/deleteresource')
     api.add_resource(classes.ApiMyClassesMem, '/api/myclassesmem')
+    api.add_resource(classes.ApiExportMemScore, '/api/exportscore')
 
     from . import study
     api.add_resource(study.ApiMyStudy, '/api/mystudy')

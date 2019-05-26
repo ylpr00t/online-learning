@@ -86,7 +86,11 @@
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                @click="handleEdit(scope.$index, scope.row)">查看课程资源
+                @click="classes_resource(scope.$index, scope.row)">查看课程资源
+              </el-button>
+              <el-button
+                size="mini"
+                @click="study_trace(scope.$index, scope.row)">查看学习记录
               </el-button>
             </template>
           </el-table-column>
@@ -174,10 +178,19 @@
           }
         },
         methods: {
-          handleEdit(index, row) {
+          classes_resource(index, row) {
             this.$router.push({
               name: 'resourceInfo',
               params: {
+                classes_id: row.classes_id
+              }
+            })
+          },
+          study_trace(index, row) {
+            this.$router.push({
+              name: 'studyTrace2',
+              params: {
+                user_id: row.user_id,
                 classes_id: row.classes_id
               }
             })
