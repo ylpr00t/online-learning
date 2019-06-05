@@ -258,7 +258,7 @@ class ApiExportMemScore(restful.Resource):
         return random_str
 
     def get_level(self, score):
-        if 90 <= score < 100:
+        if 90 <= score <= 100:
             return 'A'
         elif 70 <= score < 90:
             return 'B'

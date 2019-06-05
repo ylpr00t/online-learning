@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d39cdf5c-a409-4329-bcef-5c3fb2744f69" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/fe/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/fe/.gitignore" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -49,8 +49,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fe/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+            <state relative-caret-position="135">
+              <caret line="9" column="8" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -250,12 +250,12 @@
       <workItem from="1558276141533" duration="829000" />
       <workItem from="1558278080028" duration="2155000" />
       <workItem from="1558319605326" duration="13937000" />
-      <workItem from="1558402826390" duration="7650000" />
+      <workItem from="1558402826390" duration="7985000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25337000" />
+    <option name="totallyTimeSpent" value="25672000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-6" width="1557" height="922" extended-state="6" />
@@ -467,8 +467,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fe/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+        <state relative-caret-position="135">
+          <caret line="9" column="8" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
         </state>
       </provider>
     </entry>
